@@ -1,0 +1,59 @@
+/**
+ * Styles minimaux pour l'autocompletion FAQ.
+ *
+ * Volontairement legers : le theme est libre de surcharger.
+ */
+
+.afp-search-wrapper {
+	position: relative;
+}
+
+.afp-search-form {
+	margin-bottom: 1.5em;
+}
+
+.afp-suggestions {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	max-height: 320px;
+	overflow-y: auto;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.afp-suggestion-item {
+	display: block;
+	padding: 0.75em 1em;
+	text-decoration: none;
+	color: inherit;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.afp-suggestion-item:last-child {
+	border-bottom: none;
+}
+
+.afp-suggestion-item:hover,
+.afp-suggestion-item:focus,
+.afp-suggestion-item[aria-selected="true"] {
+	background: #f5f5f5;
+	outline: none;
+}
+
+.afp-loading,
+.afp-no-results,
+.afp-error {
+	padding: 0.75em 1em;
+	color: #666;
+	font-style: italic;
+}
+
+.afp-error {
+	color: #c00;
+}

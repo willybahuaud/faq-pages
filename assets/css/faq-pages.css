@@ -1,16 +1,59 @@
 /**
- * Styles minimaux pour l'autocompletion FAQ.
+ * Styles du plugin FAQ Pages.
  *
- * Volontairement legers : le theme est libre de surcharger.
+ * Desactivables via le filtre `afp_enable_default_styles`.
  */
 
-.afp-search-wrapper {
-	position: relative;
-}
+/* --- Formulaire de recherche --- */
 
 .afp-search-form {
 	margin-bottom: 1.5em;
 }
+
+.afp-search-wrapper {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+}
+
+.afp-search-input {
+	flex: 1 1 auto;
+	min-width: 200px;
+	padding: 0.75em 1em;
+	font-size: 1em;
+	line-height: 1.5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	transition: border-color 0.2s;
+}
+
+.afp-search-input:focus {
+	border-color: #0073aa;
+	outline: none;
+	box-shadow: 0 0 0 1px #0073aa;
+}
+
+.afp-search-submit {
+	padding: 0.75em 1.5em;
+	font-size: 1em;
+	line-height: 1.5;
+	border: none;
+	border-radius: 4px;
+	background: #0073aa;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.afp-search-submit:hover,
+.afp-search-submit:focus {
+	background: #005a87;
+}
+
+/* --- Dropdown autocompletion --- */
 
 .afp-suggestions {
 	position: absolute;
@@ -19,7 +62,7 @@
 	right: 0;
 	z-index: 100;
 	background: #fff;
-	border: 1px solid #ddd;
+	border: 1px solid #ccc;
 	border-top: none;
 	border-radius: 0 0 4px 4px;
 	max-height: 320px;

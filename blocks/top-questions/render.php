@@ -2,7 +2,8 @@
 /**
  * Rendu du bloc FAQ — Top Questions.
  *
- * Affiche la liste des questions FAQ ayant le flag "Top Question" active.
+ * Utilise la liste ordonnee de la page d'options en priorite (respect du drag & drop).
+ * Fallback sur la meta query si la page d'options n'est pas configuree.
  *
  * @package FAQ_Pages
  *
@@ -13,20 +14,35 @@
  * @param WP_Block $wp_block   L'instance WP_Block.
  */
 
-$query_args = array(
-	'post_type'      => 'faq_page',
-	'posts_per_page' => -1,
-	'no_found_rows'  => true,
-	'meta_query'     => array(
-		array(
-			'key'     => 'afp_top_question',
-			'value'   => '1',
-			'compare' => '=',
+$top_ids = (array) get_field( 'afp_top_questions_list', 'option' );
+$top_ids = array_filter( $top_ids );
+
+// Liste ordonnee depuis la page d'options.
+if ( ! empty( $top_ids ) ) {
+	$query_args = array(
+		'post_type'      => 'faq_page',
+		'post__in'       => $top_ids,
+		'posts_per_page' => count( $top_ids ),
+		'no_found_rows'  => true,
+		'orderby'        => 'post__in',
+	);
+} else {
+	// Fallback : meta query sur le toggle individuel.
+	$query_args = array(
+		'post_type'      => 'faq_page',
+		'posts_per_page' => -1,
+		'no_found_rows'  => true,
+		'meta_query'     => array(
+			array(
+				'key'     => 'afp_top_question',
+				'value'   => '1',
+				'compare' => '=',
+			),
 		),
-	),
-	'orderby'        => 'title',
-	'order'          => 'ASC',
-);
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+	);
+}
 
 /**
  * Filtre les arguments de la requete WP_Query pour les top questions.

@@ -19,9 +19,16 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 	'class' => 'afp-search-block',
 ) );
 
-// Enqueue le JS d'autocompletion uniquement quand le bloc est rendu.
+// Enqueue les assets uniquement quand le bloc est rendu.
 if ( ! $is_preview ) {
-	wp_enqueue_style( 'faq-pages' );
+	/**
+	 * Permet de desactiver les styles par defaut du plugin.
+	 *
+	 * @param bool $enabled True pour charger les styles, false pour les desactiver.
+	 */
+	if ( apply_filters( 'afp_enable_default_styles', true ) ) {
+		wp_enqueue_style( 'faq-pages' );
+	}
 	wp_enqueue_script( 'faq-autocomplete' );
 }
 ?>

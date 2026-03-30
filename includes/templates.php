@@ -29,6 +29,10 @@ function afp_register_block_templates() {
 			'description' => __( 'Page de detail d\'une question FAQ.', 'faq-pages' ),
 			'post_types'  => array( 'faq_page' ),
 		),
+		'search-faq_page'  => array(
+			'title'       => __( 'Recherche FAQ', 'faq-pages' ),
+			'description' => __( 'Résultats de recherche filtrés sur la FAQ.', 'faq-pages' ),
+		),
 	);
 
 	foreach ( $templates as $slug => $args ) {

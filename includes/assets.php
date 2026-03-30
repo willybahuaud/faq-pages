@@ -38,7 +38,6 @@ function afp_enqueue_frontend_assets() {
 
 	$script_data = array(
 		'restUrl'   => rest_url( 'wp/v2/faq-pages' ),
-		'nonce'     => wp_create_nonce( 'wp_rest' ),
 		'noResults' => __( 'Aucun résultat', 'faq-pages' ),
 		'loading'   => __( 'Recherche en cours…', 'faq-pages' ),
 		'error'     => __( 'Erreur de recherche', 'faq-pages' ),

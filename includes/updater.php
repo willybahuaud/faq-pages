@@ -18,13 +18,6 @@ define( 'AFP_GITHUB_API_URL', 'https://api.github.com' );
 define( 'AFP_UPDATER_CACHE_DURATION', 43200 );
 
 /**
- * Cache memoire pour la release GitHub (evite les appels multiples par requete).
- *
- * @var object|false|null
- */
-$afp_github_release_cache = null;
-
-/**
  * Verifie si une nouvelle release est disponible sur GitHub.
  *
  * @param object $transient Le transient des mises a jour plugins.
@@ -159,16 +152,16 @@ add_filter( 'upgrader_source_selection', 'afp_fix_directory_name', 10, 4 );
  * @return object|false Les donnees de la release ou false en cas d'erreur.
  */
 function afp_get_github_release() {
-	global $afp_github_release_cache;
+	static $cache = null;
 
-	if ( null !== $afp_github_release_cache ) {
-		return $afp_github_release_cache;
+	if ( null !== $cache ) {
+		return $cache;
 	}
 
 	$cached = get_transient( 'afp_github_release' );
 
 	if ( false !== $cached ) {
-		$afp_github_release_cache = $cached;
+		$cache = $cached;
 		return $cached;
 	}
 
@@ -191,14 +184,14 @@ function afp_get_github_release() {
 	);
 
 	if ( is_wp_error( $response ) ) {
-		$afp_github_release_cache = false;
+		$cache = false;
 		return false;
 	}
 
 	$code = wp_remote_retrieve_response_code( $response );
 
 	if ( 200 !== $code ) {
-		$afp_github_release_cache = false;
+		$cache = false;
 		return false;
 	}
 
@@ -206,12 +199,12 @@ function afp_get_github_release() {
 	$data = json_decode( $body );
 
 	if ( empty( $data ) || ! isset( $data->tag_name ) ) {
-		$afp_github_release_cache = false;
+		$cache = false;
 		return false;
 	}
 
 	set_transient( 'afp_github_release', $data, AFP_UPDATER_CACHE_DURATION );
-	$afp_github_release_cache = $data;
+	$cache = $data;
 
 	return $data;
 }
@@ -270,5 +263,10 @@ function afp_format_changelog( $body ) {
 	$html = preg_replace( '/^- (.+)$/m', '<li>$1</li>', $html );
 	$html = preg_replace( '/(<li>.*<\/li>)/s', '<ul>$1</ul>', $html );
 
-	return $html;
+	return wp_kses( $html, array(
+		'ul' => array(),
+		'li' => array(),
+		'br' => array(),
+		'p'  => array(),
+	) );
 }

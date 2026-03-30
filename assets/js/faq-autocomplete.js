@@ -88,6 +88,21 @@
 	}
 
 	/**
+	 * Verifie qu'une URL est interne au site (meme origine).
+	 *
+	 * @param {string} url L'URL a verifier.
+	 * @return {boolean} True si l'URL est valide et interne.
+	 */
+	function afpIsValidUrl( url ) {
+		try {
+			var parsed = new URL( url, window.location.origin );
+			return parsed.origin === window.location.origin;
+		} catch ( e ) {
+			return false;
+		}
+	}
+
+	/**
 	 * Appelle l'API REST pour recuperer les suggestions.
 	 *
 	 * @param {string} query Le terme de recherche.
@@ -104,9 +119,6 @@
 
 		fetch( url, {
 			signal: abortController.signal,
-			headers: {
-				'X-WP-Nonce': afpAutocomplete.nonce,
-			},
 		} )
 			.then( afpHandleResponse )
 			.then( afpRenderSuggestions )
@@ -140,7 +152,10 @@
 	}
 
 	/**
-	 * Affiche les suggestions dans le dropdown.
+	 * Affiche les suggestions dans le dropdown via DOM API.
+	 *
+	 * Utilise createElement/textContent au lieu de innerHTML
+	 * pour eviter tout risque de XSS via title.rendered.
 	 *
 	 * @param {Array} results Les resultats de l'API REST.
 	 * @return {void}
@@ -153,27 +168,23 @@
 			return;
 		}
 
-		var html = '';
-		var i;
+		suggestionsContainer.innerHTML = '';
 
+		var i;
 		for ( i = 0; i < results.length; i++ ) {
-			html += '<a href="' + results[ i ].link + '"';
-			html += ' class="afp-suggestion-item"';
-			html += ' role="option"';
-			html += ' aria-selected="false"';
-			html += ' data-index="' + i + '"';
-			html += '>' + results[ i ].title.rendered + '</a>';
+			var link = document.createElement( 'a' );
+			link.href = results[ i ].link;
+			link.className = 'afp-suggestion-item';
+			link.setAttribute( 'role', 'option' );
+			link.setAttribute( 'aria-selected', 'false' );
+			link.setAttribute( 'id', 'afp-suggestion-' + i );
+			link.textContent = results[ i ].title.rendered;
+			link.addEventListener( 'click', afpOnSuggestionClick );
+			suggestionsContainer.appendChild( link );
 		}
 
-		suggestionsContainer.innerHTML = html;
 		suggestionsContainer.removeAttribute( 'hidden' );
 		input.setAttribute( 'aria-expanded', 'true' );
-
-		var items = suggestionsContainer.querySelectorAll( '.afp-suggestion-item' );
-		var j;
-		for ( j = 0; j < items.length; j++ ) {
-			items[ j ].addEventListener( 'click', afpOnSuggestionClick );
-		}
 	}
 
 	/**
@@ -182,7 +193,12 @@
 	 * @return {void}
 	 */
 	function afpRenderLoading() {
-		suggestionsContainer.innerHTML = '<div class="afp-loading" role="status">' + afpAutocomplete.loading + '</div>';
+		suggestionsContainer.innerHTML = '';
+		var div = document.createElement( 'div' );
+		div.className = 'afp-loading';
+		div.setAttribute( 'role', 'status' );
+		div.textContent = afpAutocomplete.loading;
+		suggestionsContainer.appendChild( div );
 		suggestionsContainer.removeAttribute( 'hidden' );
 		input.setAttribute( 'aria-expanded', 'true' );
 	}
@@ -193,7 +209,11 @@
 	 * @return {void}
 	 */
 	function afpRenderNoResults() {
-		suggestionsContainer.innerHTML = '<div class="afp-no-results">' + afpAutocomplete.noResults + '</div>';
+		suggestionsContainer.innerHTML = '';
+		var div = document.createElement( 'div' );
+		div.className = 'afp-no-results';
+		div.textContent = afpAutocomplete.noResults;
+		suggestionsContainer.appendChild( div );
 		suggestionsContainer.removeAttribute( 'hidden' );
 		input.setAttribute( 'aria-expanded', 'true' );
 	}
@@ -204,7 +224,11 @@
 	 * @return {void}
 	 */
 	function afpRenderError() {
-		suggestionsContainer.innerHTML = '<div class="afp-error">' + afpAutocomplete.error + '</div>';
+		suggestionsContainer.innerHTML = '';
+		var div = document.createElement( 'div' );
+		div.className = 'afp-error';
+		div.textContent = afpAutocomplete.error;
+		suggestionsContainer.appendChild( div );
 		suggestionsContainer.removeAttribute( 'hidden' );
 		input.setAttribute( 'aria-expanded', 'true' );
 	}
@@ -218,6 +242,7 @@
 		suggestionsContainer.innerHTML = '';
 		suggestionsContainer.setAttribute( 'hidden', '' );
 		input.setAttribute( 'aria-expanded', 'false' );
+		input.removeAttribute( 'aria-activedescendant' );
 		activeIndex = -1;
 	}
 
@@ -230,7 +255,7 @@
 	function afpOnSuggestionClick( event ) {
 		event.preventDefault();
 		var href = event.currentTarget.getAttribute( 'href' );
-		if ( href ) {
+		if ( href && afpIsValidUrl( href ) ) {
 			window.location.href = href;
 		}
 	}
@@ -277,7 +302,7 @@
 		} else if ( event.key === 'Enter' && activeIndex >= 0 ) {
 			event.preventDefault();
 			var href = items[ activeIndex ].getAttribute( 'href' );
-			if ( href ) {
+			if ( href && afpIsValidUrl( href ) ) {
 				window.location.href = href;
 			}
 		} else if ( event.key === 'Escape' ) {
@@ -298,7 +323,7 @@
 			items[ i ].setAttribute( 'aria-selected', i === activeIndex ? 'true' : 'false' );
 		}
 		if ( items[ activeIndex ] ) {
-			input.setAttribute( 'aria-activedescendant', items[ activeIndex ].getAttribute( 'data-index' ) );
+			input.setAttribute( 'aria-activedescendant', items[ activeIndex ].id );
 		}
 	}
 

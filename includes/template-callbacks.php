@@ -64,6 +64,7 @@ function afp_render_top_questions() {
 	$query_args = array(
 		'post_type'      => 'faq_page',
 		'posts_per_page' => -1,
+		'no_found_rows'  => true,
 		'meta_query'     => array(
 			array(
 				'key'     => 'afp_top_question',
@@ -147,6 +148,7 @@ function afp_render_questions_by_category() {
 		$query_args = array(
 			'post_type'      => 'faq_page',
 			'posts_per_page' => -1,
+			'no_found_rows'  => true,
 			'tax_query'      => array(
 				array(
 					'taxonomy' => 'faq_category',
@@ -234,6 +236,7 @@ function afp_render_related_questions() {
 		'post_type'      => 'faq_page',
 		'post__in'       => $related_ids,
 		'posts_per_page' => count( $related_ids ),
+		'no_found_rows'  => true,
 		'orderby'        => 'post__in',
 	);
 
@@ -283,6 +286,7 @@ function afp_render_search_results() {
 		'post_type'      => 'faq_page',
 		's'              => $search_query,
 		'posts_per_page' => -1,
+		'no_found_rows'  => true,
 	) );
 
 	if ( ! $query->have_posts() ) {

@@ -41,6 +41,10 @@ add_action( 'pre_get_posts', 'afp_filter_search_query' );
  * Insere le template search-faq_page en tete de la hierarchie quand
  * la recherche est filtree sur le CPT faq_page.
  *
+ * Fonctionne en classic theme et en block theme (FSE).
+ * En block theme, le filtre `search_template_hierarchy` alimente aussi
+ * la resolution des block templates depuis WP 6.1.
+ *
  * @param string[] $templates La liste des templates candidats.
  * @return string[] La liste modifiee.
  */

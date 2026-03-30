@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enregistre les block templates du plugin via wp_register_block_template().
+ * Enregistre les block templates du plugin via register_block_template().
  *
  * @return void
  */
@@ -41,7 +41,7 @@ function afp_register_block_templates() {
 			$args['content'] = file_get_contents( $template_file );
 		}
 
-		wp_register_block_template( 'faq-pages//' . $slug, $args );
+		register_block_template( 'faq-pages//' . $slug, $args );
 	}
 }
 add_action( 'init', 'afp_register_block_templates' );

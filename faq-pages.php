@@ -1,15 +1,16 @@
 <?php
 /**
- * Plugin Name: FAQ Pages
- * Plugin URI:  https://github.com/willybahuaud/faq-pages
- * Description: Module FAQ complet pour block themes — chaque question est une page avec sa propre URL.
- * Version:     0.1.0
+ * Plugin Name:       FAQ Pages
+ * Plugin URI:        https://github.com/willybahuaud/faq-pages
+ * Description:       Module FAQ complet pour block themes — chaque question est une page avec sa propre URL.
+ * Version:           0.1.0
  * Requires at least: 6.7
- * Requires PHP: 8.0
- * Author:      Willy Bahuaud
- * Author URI:  https://wabeo.fr
- * License:     GPL-2.0-or-later
- * Text Domain: faq-pages
+ * Requires PHP:      8.0
+ * Requires Plugins:  advanced-custom-fields-pro
+ * Author:            Willy Bahuaud
+ * Author URI:        https://wabeo.fr
+ * License:           GPL-2.0-or-later
+ * Text Domain:       faq-pages
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,8 +25,8 @@ define( 'AFP_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once AFP_PATH . 'includes/cpt.php';
 require_once AFP_PATH . 'includes/acf-fields.php';
+require_once AFP_PATH . 'includes/blocks.php';
 require_once AFP_PATH . 'includes/templates.php';
-require_once AFP_PATH . 'includes/template-callbacks.php';
 require_once AFP_PATH . 'includes/rest-api.php';
 require_once AFP_PATH . 'includes/schema.php';
 require_once AFP_PATH . 'includes/search.php';

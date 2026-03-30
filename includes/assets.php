@@ -1,6 +1,9 @@
 <?php
 /**
- * Enqueue des assets front-end (JS autocompletion, CSS).
+ * Enregistrement des assets front-end (JS autocompletion, CSS).
+ *
+ * Les assets sont enregistres globalement mais enqueues uniquement
+ * par le bloc search-form quand il est rendu.
  *
  * @package FAQ_Pages
  */
@@ -10,25 +13,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue le JS d'autocompletion et le CSS sur les pages FAQ.
+ * Enregistre le JS d'autocompletion et le CSS.
  *
- * Charge les assets uniquement sur l'archive, le single et la recherche FAQ.
+ * L'enqueue effectif se fait dans le render.php du bloc search-form.
  *
  * @return void
  */
-function afp_enqueue_frontend_assets() {
-	if ( ! afp_should_load_assets() ) {
-		return;
-	}
-
-	wp_enqueue_style(
+function afp_register_frontend_assets() {
+	wp_register_style(
 		'faq-pages',
 		AFP_URL . 'assets/css/faq-pages.css',
 		array(),
 		AFP_VERSION
 	);
 
-	wp_enqueue_script(
+	wp_register_script(
 		'faq-autocomplete',
 		AFP_URL . 'assets/js/faq-autocomplete.js',
 		array(),
@@ -52,28 +51,4 @@ function afp_enqueue_frontend_assets() {
 
 	wp_localize_script( 'faq-autocomplete', 'afpAutocomplete', $script_data );
 }
-add_action( 'wp_enqueue_scripts', 'afp_enqueue_frontend_assets' );
-
-/**
- * Determine si les assets FAQ doivent etre charges.
- *
- * @return bool True si on est sur une page FAQ.
- */
-function afp_should_load_assets() {
-	if ( is_post_type_archive( 'faq_page' ) ) {
-		return true;
-	}
-
-	if ( is_singular( 'faq_page' ) ) {
-		return true;
-	}
-
-	if ( is_search() ) {
-		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
-		if ( 'faq_page' === $post_type ) {
-			return true;
-		}
-	}
-
-	return false;
-}
+add_action( 'wp_enqueue_scripts', 'afp_register_frontend_assets' );

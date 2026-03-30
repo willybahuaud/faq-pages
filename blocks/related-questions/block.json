@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/faq-related-questions",
+	"title": "FAQ — Questions associées",
+	"description": "Liste des questions FAQ associées, configurées via le champ ACF du post courant.",
+	"category": "widgets",
+	"icon": "networking",
+	"keywords": [ "faq", "related", "associées" ],
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	},
+	"supports": {
+		"anchor": true,
+		"align": true,
+		"jsx": false
+	}
+}

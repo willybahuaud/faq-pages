@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/faq-questions-by-category",
+	"title": "FAQ — Questions par catégorie",
+	"description": "Toutes les questions FAQ regroupées par catégorie.",
+	"category": "widgets",
+	"icon": "category",
+	"keywords": [ "faq", "category", "catégorie" ],
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	},
+	"supports": {
+		"anchor": true,
+		"align": true,
+		"jsx": false
+	}
+}

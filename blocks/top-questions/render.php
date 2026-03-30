@@ -1,0 +1,70 @@
+<?php
+/**
+ * Rendu du bloc FAQ — Top Questions.
+ *
+ * Affiche la liste des questions FAQ ayant le flag "Top Question" active.
+ *
+ * @package FAQ_Pages
+ *
+ * @param array    $block      Les donnees du bloc.
+ * @param string   $content    Le contenu du bloc.
+ * @param bool     $is_preview True si on est dans l'editeur.
+ * @param int      $post_id    L'ID du post courant.
+ * @param WP_Block $wp_block   L'instance WP_Block.
+ */
+
+$query_args = array(
+	'post_type'      => 'faq_page',
+	'posts_per_page' => -1,
+	'no_found_rows'  => true,
+	'meta_query'     => array(
+		array(
+			'key'     => 'afp_top_question',
+			'value'   => '1',
+			'compare' => '=',
+		),
+	),
+	'orderby'        => 'title',
+	'order'          => 'ASC',
+);
+
+/**
+ * Filtre les arguments de la requete WP_Query pour les top questions.
+ *
+ * @param array $query_args Les arguments WP_Query.
+ */
+$query_args = apply_filters( 'afp_top_questions_query_args', $query_args );
+
+$query = new WP_Query( $query_args );
+
+if ( ! $query->have_posts() ) {
+	return;
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( array(
+	'class' => 'afp-top-questions-block',
+) );
+?>
+<div <?php echo $wrapper_attributes; ?>>
+	<?php
+	/**
+	 * Se declenche avant le rendu des top questions.
+	 */
+	do_action( 'afp_before_top_questions' );
+	?>
+	<ul class="afp-top-questions">
+		<?php while ( $query->have_posts() ) : $query->the_post(); ?>
+			<li class="afp-top-question-item">
+				<a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
+			</li>
+		<?php endwhile; ?>
+	</ul>
+	<?php
+	wp_reset_postdata();
+
+	/**
+	 * Se declenche apres le rendu des top questions.
+	 */
+	do_action( 'afp_after_top_questions' );
+	?>
+</div>

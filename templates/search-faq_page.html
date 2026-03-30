@@ -7,13 +7,27 @@
 <h1 class="wp-block-heading">Résultats de recherche</h1>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode -->
-[afp_search_form]
-<!-- /wp:shortcode -->
+<!-- wp:acf/faq-search-form {"name":"acf/faq-search-form","mode":"preview"} /-->
 
-<!-- wp:shortcode -->
-[afp_search_results]
-<!-- /wp:shortcode -->
+<!-- wp:query {"query":{"perPage":20,"postType":"faq_page","inherit":true}} -->
+<div class="wp-block-query">
+
+<!-- wp:post-template -->
+<!-- wp:group {"style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group">
+<!-- wp:post-title {"isLink":true} /-->
+</div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
+
+<!-- wp:query-no-results -->
+<!-- wp:paragraph -->
+<p>Aucune question ne correspond à votre recherche.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:query-no-results -->
+
+</div>
+<!-- /wp:query -->
 
 </div>
 <!-- /wp:group -->

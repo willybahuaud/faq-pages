@@ -17,7 +17,7 @@ Inspiré de l'architecture de help.netflix.com : pas d'accordion, chaque questio
 - **Taxonomie `faq_category`** hiérarchique pour organiser les questions
 - **Page d'archive** avec top questions, classement par catégorie, et recherche
 - **Page de détail** avec contenu Gutenberg, CTA configurable, et questions associées
-- **Recherche dédiée** filtrée sur la FAQ avec résultats dédiés
+- **Recherche dédiée** filtrée sur la FAQ avec Query Loop native
 - **Autocomplétion** vanilla JS avec debounce, navigation clavier, et accessibilité
 - **Schema.org** JSON-LD automatique sur chaque question (désactivable)
 - **Mises à jour** automatiques via les releases GitHub
@@ -40,18 +40,19 @@ Le plugin fournit 3 templates FSE par défaut :
 
 Pour les surcharger, crée un fichier du même nom dans le dossier `templates/` de ton thème. WordPress donne automatiquement la priorité au thème.
 
-## Shortcodes
+## Blocs
 
-Les templates utilisent des shortcodes pour le contenu dynamique :
+Le plugin fournit 5 blocs dynamiques utilisables dans les templates ou l'éditeur :
 
-| Shortcode | Usage |
+| Bloc | Usage |
 |---|---|
-| `[afp_search_form]` | Formulaire de recherche avec autocomplétion |
-| `[afp_top_questions]` | Liste des questions marquées "Top Question" |
-| `[afp_questions_by_category]` | Questions regroupées par catégorie |
-| `[afp_cta]` | Bloc CTA (configuré par question via ACF) |
-| `[afp_related_questions]` | Questions associées (configuré via ACF) |
-| `[afp_search_results]` | Résultats de recherche filtrés sur la FAQ |
+| `acf/faq-search-form` | Formulaire de recherche avec autocomplétion |
+| `acf/faq-top-questions` | Liste des questions marquées "Top Question" |
+| `acf/faq-questions-by-category` | Questions regroupées par catégorie |
+| `acf/faq-cta` | Bouton CTA (configuré par question via ACF) |
+| `acf/faq-related-questions` | Questions associées (configuré via ACF) |
+
+Les résultats de recherche utilisent le bloc natif `core/query` avec `inherit: true`.
 
 ## Hooks
 
@@ -61,7 +62,6 @@ Les templates utilisent des shortcodes pour le contenu dynamique :
 - `afp_schema_data` — Modifier les données Schema.org
 - `afp_top_questions_query_args` — Modifier la requête des top questions
 - `afp_related_questions_query_args` — Modifier la requête des questions associées
-- `afp_search_form_html` — Modifier le HTML du formulaire de recherche
 - `afp_cta_html` — Modifier le rendu du CTA
 - `afp_autocomplete_script_data` — Modifier les données localisées du JS
 

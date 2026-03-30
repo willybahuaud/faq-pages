@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/faq-top-questions",
+	"title": "FAQ — Top Questions",
+	"description": "Liste des questions FAQ mises en avant.",
+	"category": "widgets",
+	"icon": "star-filled",
+	"keywords": [ "faq", "top", "questions" ],
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	},
+	"supports": {
+		"anchor": true,
+		"align": true,
+		"jsx": false
+	}
+}

@@ -34,6 +34,7 @@ function afp_output_schema_jsonld() {
 	$post    = get_queried_object();
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = wp_strip_all_tags( $content );
+	$content = preg_replace( '/\s+/', ' ', trim( $content ) );
 
 	$schema = array(
 		'@context'   => 'https://schema.org',

@@ -77,23 +77,8 @@ function afp_register_acf_fields() {
 	// Contenu supplementaire : CTA + questions associees.
 	acf_add_local_field_group( array(
 		'key'                   => 'group_afp_content',
-		'title'                 => __( 'Contenu complémentaire', 'faq-pages' ),
+		'title'                 => __( 'Questions associées', 'faq-pages' ),
 		'fields'                => array(
-			array(
-				'key'         => 'field_afp_cta_text',
-				'label'       => __( 'Texte du CTA', 'faq-pages' ),
-				'name'        => 'afp_cta_text',
-				'type'        => 'text',
-				'placeholder' => __( 'Contactez-nous', 'faq-pages' ),
-				'wrapper'     => array( 'width' => '50' ),
-			),
-			array(
-				'key'     => 'field_afp_cta_url',
-				'label'   => __( 'URL du CTA', 'faq-pages' ),
-				'name'    => 'afp_cta_url',
-				'type'    => 'url',
-				'wrapper' => array( 'width' => '50' ),
-			),
 			array(
 				'key'           => 'field_afp_related_questions',
 				'label'         => __( 'Questions associées', 'faq-pages' ),
@@ -115,6 +100,42 @@ function afp_register_acf_fields() {
 			),
 		),
 		'menu_order'            => 10,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+	) );
+
+	// Bloc Top Questions : choix du layout.
+	acf_add_local_field_group( array(
+		'key'                   => 'group_afp_top_questions_block',
+		'title'                 => __( 'Réglages du bloc', 'faq-pages' ),
+		'fields'                => array(
+			array(
+				'key'           => 'field_afp_top_questions_layout',
+				'label'         => __( 'Mise en forme', 'faq-pages' ),
+				'name'          => 'afp_top_questions_layout',
+				'type'          => 'radio',
+				'instructions'  => '',
+				'choices'       => array(
+					'list'   => __( 'Liste à puces', 'faq-pages' ),
+					'inline' => __( 'Liens en ligne', 'faq-pages' ),
+				),
+				'default_value' => 'list',
+				'layout'        => 'horizontal',
+				'return_format' => 'value',
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'block',
+					'operator' => '==',
+					'value'    => 'acf/faq-top-questions',
+				),
+			),
+		),
+		'menu_order'            => 0,
 		'position'              => 'normal',
 		'style'                 => 'default',
 		'label_placement'       => 'top',

@@ -57,8 +57,13 @@ if ( ! $query->have_posts() ) {
 	return;
 }
 
+$layout = get_field( 'afp_top_questions_layout' );
+if ( ! $layout ) {
+	$layout = 'list';
+}
+
 $wrapper_attributes = get_block_wrapper_attributes( array(
-	'class' => 'afp-top-questions-block',
+	'class' => 'afp-top-questions-block afp-top-questions-block--' . $layout,
 ) );
 ?>
 <div <?php echo $wrapper_attributes; ?>>
@@ -67,6 +72,30 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 	 * Se declenche avant le rendu des top questions.
 	 */
 	do_action( 'afp_before_top_questions' );
+
+	if ( 'inline' === $layout ) {
+		afp_render_top_questions_inline( $query );
+	} else {
+		afp_render_top_questions_list( $query );
+	}
+
+	wp_reset_postdata();
+
+	/**
+	 * Se declenche apres le rendu des top questions.
+	 */
+	do_action( 'afp_after_top_questions' );
+	?>
+</div>
+<?php
+
+/**
+ * Rendu des top questions sous forme de liste a puces.
+ *
+ * @param WP_Query $query La requete contenant les top questions.
+ * @return void
+ */
+function afp_render_top_questions_list( $query ) {
 	?>
 	<ul class="afp-top-questions">
 		<?php while ( $query->have_posts() ) : $query->the_post(); ?>
@@ -76,11 +105,27 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 		<?php endwhile; ?>
 	</ul>
 	<?php
-	wp_reset_postdata();
+}
+
+/**
+ * Rendu des top questions en ligne dans un paragraphe.
+ *
+ * @param WP_Query $query La requete contenant les top questions.
+ * @return void
+ */
+function afp_render_top_questions_inline( $query ) {
+	$links = array();
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		$links[] = '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
+	}
 
 	/**
-	 * Se declenche apres le rendu des top questions.
+	 * Filtre le separateur entre les liens en mode inline.
+	 *
+	 * @param string $separator Le separateur HTML. Par defaut ' · '.
 	 */
-	do_action( 'afp_after_top_questions' );
-	?>
-</div>
+	$separator = apply_filters( 'afp_top_questions_inline_separator', ' · ' );
+
+	echo '<p class="afp-top-questions afp-top-questions--inline">' . implode( $separator, $links ) . '</p>';
+}

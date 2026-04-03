@@ -14,22 +14,45 @@
  * @param WP_Block $wp_block   L'instance WP_Block.
  */
 
-$related_ids = get_field( 'afp_related_questions', $post_id );
+$related_ids  = get_field( 'afp_related_questions', $post_id );
+$current_id   = get_queried_object_id();
+$is_automatic = empty( $related_ids );
 
-if ( empty( $related_ids ) ) {
-	if ( $is_preview ) {
-		echo '<p style="color:#999;font-style:italic;">' . esc_html__( 'Questions associées — aucune sélectionnée.', 'faq-pages' ) . '</p>';
+if ( $is_automatic ) {
+	$terms = get_the_terms( $current_id, 'faq_category' );
+
+	if ( empty( $terms ) || is_wp_error( $terms ) ) {
+		if ( $is_preview ) {
+			echo '<p style="color:#999;font-style:italic;">' . esc_html__( 'Questions associées — aucune catégorie trouvée.', 'faq-pages' ) . '</p>';
+		}
+		return;
 	}
-	return;
-}
 
-$query_args = array(
-	'post_type'      => 'faq_page',
-	'post__in'       => $related_ids,
-	'posts_per_page' => count( $related_ids ),
-	'no_found_rows'  => true,
-	'orderby'        => 'post__in',
-);
+	$term_ids = wp_list_pluck( $terms, 'term_id' );
+
+	$query_args = array(
+		'post_type'      => 'faq_page',
+		'posts_per_page' => 3,
+		'no_found_rows'  => true,
+		'post__not_in'   => array( $current_id ),
+		'orderby'        => 'rand',
+		'tax_query'      => array(
+			array(
+				'taxonomy' => 'faq_category',
+				'field'    => 'term_id',
+				'terms'    => $term_ids,
+			),
+		),
+	);
+} else {
+	$query_args = array(
+		'post_type'      => 'faq_page',
+		'post__in'       => $related_ids,
+		'posts_per_page' => count( $related_ids ),
+		'no_found_rows'  => true,
+		'orderby'        => 'post__in',
+	);
+}
 
 /**
  * Filtre les arguments de la requete WP_Query pour les questions associees.

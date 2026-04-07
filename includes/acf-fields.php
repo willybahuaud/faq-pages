@@ -142,6 +142,114 @@ function afp_register_acf_fields() {
 		'instruction_placement' => 'label',
 	) );
 
+	// Bloc Questions par categorie : espacement.
+	acf_add_local_field_group( array(
+		'key'                   => 'group_afp_questions_by_category_block',
+		'title'                 => __( 'Réglages du bloc', 'faq-pages' ),
+		'fields'                => array(
+			array(
+				'key'           => 'field_afp_category_gap',
+				'label'         => __( 'Espacement entre les questions (px)', 'faq-pages' ),
+				'name'          => 'afp_category_gap',
+				'type'          => 'number',
+				'instructions'  => __( 'Espace entre chaque question dans la liste.', 'faq-pages' ),
+				'default_value' => 8,
+				'min'           => 0,
+				'max'           => 48,
+				'step'          => 1,
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'block',
+					'operator' => '==',
+					'value'    => 'acf/faq-questions-by-category',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+	) );
+
+	// Bloc Questions associees : nombre de questions.
+	acf_add_local_field_group( array(
+		'key'                   => 'group_afp_related_questions_block',
+		'title'                 => __( 'Réglages du bloc', 'faq-pages' ),
+		'fields'                => array(
+			array(
+				'key'           => 'field_afp_related_count',
+				'label'         => __( 'Nombre de questions', 'faq-pages' ),
+				'name'          => 'afp_related_count',
+				'type'          => 'number',
+				'instructions'  => __( 'Nombre de questions à afficher en mode automatique.', 'faq-pages' ),
+				'default_value' => 3,
+				'min'           => 1,
+				'max'           => 10,
+				'step'          => 1,
+			),
+			array(
+				'key'           => 'field_afp_related_gap',
+				'label'         => __( 'Espacement entre les questions (px)', 'faq-pages' ),
+				'name'          => 'afp_related_gap',
+				'type'          => 'number',
+				'instructions'  => __( 'Espace entre chaque question dans la liste.', 'faq-pages' ),
+				'default_value' => 8,
+				'min'           => 0,
+				'max'           => 48,
+				'step'          => 1,
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'block',
+					'operator' => '==',
+					'value'    => 'acf/faq-related-questions',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+	) );
+
+	// Bloc Recherche : placeholder personnalisable.
+	acf_add_local_field_group( array(
+		'key'                   => 'group_afp_search_form_block',
+		'title'                 => __( 'Réglages du bloc', 'faq-pages' ),
+		'fields'                => array(
+			array(
+				'key'           => 'field_afp_search_placeholder',
+				'label'         => __( 'Placeholder', 'faq-pages' ),
+				'name'          => 'afp_search_placeholder',
+				'type'          => 'text',
+				'instructions'  => __( 'Texte affiché dans le champ de recherche.', 'faq-pages' ),
+				'placeholder'   => __( 'Rechercher une question…', 'faq-pages' ),
+				'default_value' => '',
+			),
+		),
+		'location'              => array(
+			array(
+				array(
+					'param'    => 'block',
+					'operator' => '==',
+					'value'    => 'acf/faq-search-form',
+				),
+			),
+		),
+		'menu_order'            => 0,
+		'position'              => 'normal',
+		'style'                 => 'default',
+		'label_placement'       => 'top',
+		'instruction_placement' => 'label',
+	) );
+
 	// Page d'options : liste centralisee des top questions.
 	acf_add_local_field_group( array(
 		'key'                   => 'group_afp_options',

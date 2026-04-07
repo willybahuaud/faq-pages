@@ -54,7 +54,7 @@ function afp_register_post_type() {
 		'hierarchical'       => false,
 		'menu_position'      => 20,
 		'menu_icon'          => 'dashicons-editor-help',
-		'supports'           => array( 'title', 'editor', 'excerpt', 'revisions', 'custom-fields' ),
+		'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields' ),
 	);
 
 	register_post_type( 'faq_page', $args );

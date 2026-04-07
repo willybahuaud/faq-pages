@@ -14,9 +14,13 @@
  * @param WP_Block $wp_block   L'instance WP_Block.
  */
 
-$related_ids  = get_field( 'afp_related_questions', $post_id );
-$current_id   = get_queried_object_id();
-$is_automatic = empty( $related_ids );
+$related_ids   = get_field( 'afp_related_questions', $post_id );
+$current_id    = get_queried_object_id();
+$is_automatic  = empty( $related_ids );
+$related_count = (int) get_field( 'afp_related_count' );
+if ( $related_count < 1 ) {
+	$related_count = 3;
+}
 
 if ( $is_automatic ) {
 	$terms = get_the_terms( $current_id, 'faq_category' );
@@ -32,7 +36,7 @@ if ( $is_automatic ) {
 
 	$query_args = array(
 		'post_type'      => 'faq_page',
-		'posts_per_page' => 3,
+		'posts_per_page' => $related_count,
 		'no_found_rows'  => true,
 		'post__not_in'   => array( $current_id ),
 		'orderby'        => 'rand',
@@ -68,8 +72,14 @@ if ( ! $query->have_posts() ) {
 	return;
 }
 
+$related_gap = (int) get_field( 'afp_related_gap' );
+if ( $related_gap < 0 ) {
+	$related_gap = 8;
+}
+
 $wrapper_attributes = get_block_wrapper_attributes( array(
 	'class' => 'afp-related-questions-block',
+	'style' => '--afp-list-gap:' . $related_gap . 'px',
 ) );
 ?>
 <div <?php echo $wrapper_attributes; ?>>

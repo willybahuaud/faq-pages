@@ -101,3 +101,22 @@
 .afp-error {
 	color: #c00;
 }
+
+/* --- Top Questions --- */
+
+.afp-top-questions-block > .afp-top-questions {
+	margin: 0;
+	padding: 0;
+}
+
+/* --- Espacement des listes --- */
+
+.afp-related-questions-block > .afp-related-list,
+.afp-questions-by-category-block .afp-category-questions {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: var(--afp-list-gap, 8px);
+}

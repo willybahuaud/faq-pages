@@ -15,6 +15,10 @@
  */
 
 $search_query     = get_query_var( 's', '' );
+$placeholder      = get_field( 'afp_search_placeholder' );
+if ( ! $placeholder ) {
+	$placeholder = __( 'Rechercher une question…', 'faq-pages' );
+}
 $wrapper_attributes = get_block_wrapper_attributes( array(
 	'class' => 'afp-search-block',
 ) );
@@ -36,13 +40,13 @@ if ( ! $is_preview ) {
 	<form class="afp-search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>" method="get" role="search">
 		<input type="hidden" name="post_type" value="faq_page">
 		<div class="afp-search-wrapper">
-			<label for="afp-search-input" class="screen-reader-text"><?php esc_html_e( 'Rechercher dans la FAQ', 'faq-pages' ); ?></label>
+			<label for="afp-search-input" class="screen-reader-text"><?php echo esc_html( $placeholder ); ?></label>
 			<input
 				type="search"
 				id="afp-search-input"
 				name="s"
 				class="afp-search-input"
-				placeholder="<?php esc_attr_e( 'Rechercher une question…', 'faq-pages' ); ?>"
+				placeholder="<?php echo esc_attr( $placeholder ); ?>"
 				value="<?php echo esc_attr( $search_query ); ?>"
 				autocomplete="off"
 			>

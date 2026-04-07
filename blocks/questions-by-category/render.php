@@ -24,8 +24,14 @@ if ( is_wp_error( $terms ) || empty( $terms ) ) {
 	return;
 }
 
+$category_gap = (int) get_field( 'afp_category_gap' );
+if ( $category_gap < 0 ) {
+	$category_gap = 8;
+}
+
 $wrapper_attributes = get_block_wrapper_attributes( array(
 	'class' => 'afp-questions-by-category-block',
+	'style' => '--afp-list-gap:' . $category_gap . 'px',
 ) );
 ?>
 <div <?php echo $wrapper_attributes; ?>>

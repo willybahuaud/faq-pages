@@ -7,6 +7,7 @@
 	"category": "widgets",
 	"icon": "star-filled",
 	"keywords": [ "faq", "top", "questions" ],
+	"style": [ "faq-pages" ],
 	"acf": {
 		"mode": "preview",
 		"renderTemplate": "render.php"

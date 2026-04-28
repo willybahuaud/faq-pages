@@ -13,20 +13,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enregistre le JS d'autocompletion et le CSS.
+ * Enregistre le CSS du plugin.
  *
- * L'enqueue effectif se fait dans le render.php du bloc search-form.
+ * Enregistre sur init pour que le handle soit disponible quand
+ * register_block_type() lit la propriete "style" des block.json.
+ * L'enqueue effectif est gere automatiquement par WP au rendu des blocs.
  *
  * @return void
  */
-function afp_register_frontend_assets() {
+function afp_register_styles() {
+	/**
+	 * Permet de desactiver les styles par defaut du plugin.
+	 *
+	 * @param bool $enabled True pour charger les styles, false pour les desactiver.
+	 */
+	if ( ! apply_filters( 'afp_enable_default_styles', true ) ) {
+		return;
+	}
+
 	wp_register_style(
 		'faq-pages',
 		AFP_URL . 'assets/css/faq-pages.css',
 		array(),
 		AFP_VERSION
 	);
+}
+add_action( 'init', 'afp_register_styles' );
 
+/**
+ * Enregistre le JS d'autocompletion.
+ *
+ * L'enqueue effectif se fait dans le render.php du bloc search-form.
+ *
+ * @return void
+ */
+function afp_register_frontend_assets() {
 	wp_register_script(
 		'faq-autocomplete',
 		AFP_URL . 'assets/js/faq-autocomplete.js',

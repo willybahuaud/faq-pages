@@ -74,9 +74,30 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 	do_action( 'afp_before_top_questions' );
 
 	if ( 'inline' === $layout ) {
-		afp_render_top_questions_inline( $query );
+		$links = array();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$links[] = '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
+		}
+
+		/**
+		 * Filtre le separateur entre les liens en mode inline.
+		 *
+		 * @param string $separator Le separateur HTML. Par defaut ' · '.
+		 */
+		$separator = apply_filters( 'afp_top_questions_inline_separator', ' · ' );
+
+		echo '<p class="afp-top-questions afp-top-questions--inline">' . implode( $separator, $links ) . '</p>';
 	} else {
-		afp_render_top_questions_list( $query );
+		?>
+		<ul class="afp-top-questions">
+			<?php while ( $query->have_posts() ) : $query->the_post(); ?>
+				<li class="afp-top-question-item">
+					<a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
+				</li>
+			<?php endwhile; ?>
+		</ul>
+		<?php
 	}
 
 	wp_reset_postdata();
@@ -87,45 +108,3 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 	do_action( 'afp_after_top_questions' );
 	?>
 </div>
-<?php
-
-/**
- * Rendu des top questions sous forme de liste a puces.
- *
- * @param WP_Query $query La requete contenant les top questions.
- * @return void
- */
-function afp_render_top_questions_list( $query ) {
-	?>
-	<ul class="afp-top-questions">
-		<?php while ( $query->have_posts() ) : $query->the_post(); ?>
-			<li class="afp-top-question-item">
-				<a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
-			</li>
-		<?php endwhile; ?>
-	</ul>
-	<?php
-}
-
-/**
- * Rendu des top questions en ligne dans un paragraphe.
- *
- * @param WP_Query $query La requete contenant les top questions.
- * @return void
- */
-function afp_render_top_questions_inline( $query ) {
-	$links = array();
-	while ( $query->have_posts() ) {
-		$query->the_post();
-		$links[] = '<a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a>';
-	}
-
-	/**
-	 * Filtre le separateur entre les liens en mode inline.
-	 *
-	 * @param string $separator Le separateur HTML. Par defaut ' · '.
-	 */
-	$separator = apply_filters( 'afp_top_questions_inline_separator', ' · ' );
-
-	echo '<p class="afp-top-questions afp-top-questions--inline">' . implode( $separator, $links ) . '</p>';
-}

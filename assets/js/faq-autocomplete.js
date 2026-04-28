@@ -152,6 +152,21 @@
 	}
 
 	/**
+	 * Decode les entites HTML d'une chaine (ex: &rsquo; → ').
+	 *
+	 * Utilise un textarea comme decodeur pour eviter tout risque XSS
+	 * (le contenu d'un textarea n'est jamais interprete comme du HTML).
+	 *
+	 * @param {string} text La chaine avec entites HTML.
+	 * @return {string} La chaine decodee.
+	 */
+	function afpDecodeEntities( text ) {
+		var textarea = document.createElement( 'textarea' );
+		textarea.innerHTML = text;
+		return textarea.value;
+	}
+
+	/**
 	 * Affiche les suggestions dans le dropdown via DOM API.
 	 *
 	 * Utilise createElement/textContent au lieu de innerHTML
@@ -178,7 +193,7 @@
 			link.setAttribute( 'role', 'option' );
 			link.setAttribute( 'aria-selected', 'false' );
 			link.setAttribute( 'id', 'afp-suggestion-' + i );
-			link.textContent = results[ i ].title.rendered;
+			link.textContent = afpDecodeEntities( results[ i ].title.rendered );
 			link.addEventListener( 'click', afpOnSuggestionClick );
 			suggestionsContainer.appendChild( link );
 		}

@@ -49,6 +49,7 @@ if ( ! $is_preview ) {
 				placeholder="<?php echo esc_attr( $placeholder ); ?>"
 				value="<?php echo esc_attr( $search_query ); ?>"
 				autocomplete="off"
+				required
 			>
 			<button type="submit" class="afp-search-submit"><?php esc_html_e( 'Rechercher', 'faq-pages' ); ?></button>
 			<div class="afp-suggestions" role="listbox" aria-label="<?php esc_attr_e( 'Suggestions', 'faq-pages' ); ?>" hidden></div>

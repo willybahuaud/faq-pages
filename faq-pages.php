@@ -3,7 +3,7 @@
  * Plugin Name:       FAQ Pages
  * Plugin URI:        https://github.com/willybahuaud/faq-pages
  * Description:       Module FAQ complet pour block themes — chaque question est une page avec sa propre URL.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      8.0
  * Requires Plugins:  advanced-custom-fields-pro
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AFP_VERSION', '0.1.1' );
+define( 'AFP_VERSION', '0.1.2' );
 define( 'AFP_FILE', __FILE__ );
 define( 'AFP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AFP_URL', plugin_dir_url( __FILE__ ) );

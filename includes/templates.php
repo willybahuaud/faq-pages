@@ -45,3 +45,36 @@ function afp_register_block_templates() {
 	}
 }
 add_action( 'init', 'afp_register_block_templates' );
+
+/**
+ * Renvoie une 404 sur l'archive FAQ si aucune question n'existe dans la langue courante.
+ *
+ * Avec Polylang, WP_Query filtre automatiquement par langue.
+ * Sans Polylang, renvoie 404 si aucune question n'existe du tout.
+ * Permet de ne pas afficher une page d'archive vide pour les langues
+ * ou la FAQ n'est pas encore traduite.
+ *
+ * @return void
+ */
+function afp_maybe_404_empty_archive() {
+	if ( ! is_post_type_archive( 'faq_page' ) || is_admin() ) {
+		return;
+	}
+
+	$has_posts = new WP_Query( array(
+		'post_type'      => 'faq_page',
+		'posts_per_page' => 1,
+		'no_found_rows'  => true,
+		'fields'         => 'ids',
+	) );
+
+	if ( $has_posts->have_posts() ) {
+		return;
+	}
+
+	global $wp_query;
+	$wp_query->set_404();
+	status_header( 404 );
+	nocache_headers();
+}
+add_action( 'template_redirect', 'afp_maybe_404_empty_archive' );

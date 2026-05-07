@@ -14,7 +14,7 @@
  * @param WP_Block $wp_block   L'instance WP_Block.
  */
 
-$top_ids = (array) get_field( 'afp_top_questions_list', 'option' );
+$top_ids = (array) get_field( afp_get_top_questions_field_name(), 'option' );
 $top_ids = array_filter( $top_ids );
 
 // Liste ordonnee depuis la page d'options.

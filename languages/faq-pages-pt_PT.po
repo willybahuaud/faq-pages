@@ -1,0 +1,314 @@
+# Translation of FAQ Pages in Portuguese (Portugal).
+# Copyright (C) 2026 Willy Bahuaud
+# This file is distributed under the same license as the FAQ Pages package.
+msgid ""
+msgstr ""
+"Project-Id-Version: FAQ Pages 0.2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/willybahuaud/faq-pages/issues\n"
+"POT-Creation-Date: 2026-05-07 00:00+0000\n"
+"PO-Revision-Date: 2026-05-07 00:00+0000\n"
+"Last-Translator: Willy Bahuaud\n"
+"Language-Team: Portuguese (Portugal)\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+msgid "FAQ Pages"
+msgstr "Páginas FAQ"
+
+#. Description of the plugin
+msgid "Module FAQ complet pour block themes — chaque question est une page avec sa propre URL."
+msgstr "Módulo FAQ completo para temas de blocos — cada pergunta é uma página com o seu próprio URL."
+
+#: includes/cpt.php
+msgctxt "post type general name"
+msgid "FAQ"
+msgstr "FAQ"
+
+#: includes/cpt.php
+msgctxt "post type singular name"
+msgid "Question"
+msgstr "Pergunta"
+
+#: includes/cpt.php
+msgctxt "admin menu"
+msgid "FAQ Pages"
+msgstr "Páginas FAQ"
+
+#: includes/cpt.php
+msgctxt "add new on admin bar"
+msgid "Question FAQ"
+msgstr "Pergunta FAQ"
+
+#: includes/cpt.php
+msgid "Ajouter"
+msgstr "Adicionar"
+
+#: includes/cpt.php
+msgid "Ajouter une question"
+msgstr "Adicionar nova pergunta"
+
+#: includes/cpt.php
+msgid "Nouvelle question"
+msgstr "Nova pergunta"
+
+#: includes/cpt.php
+msgid "Modifier la question"
+msgstr "Editar pergunta"
+
+#: includes/cpt.php
+msgid "Voir la question"
+msgstr "Ver pergunta"
+
+#: includes/cpt.php
+msgid "Toutes les questions"
+msgstr "Todas as perguntas"
+
+#: includes/cpt.php
+msgid "Rechercher dans la FAQ"
+msgstr "Pesquisar na FAQ"
+
+#: includes/cpt.php
+msgid "Aucune question trouvée."
+msgstr "Nenhuma pergunta encontrada."
+
+#: includes/cpt.php
+msgid "Aucune question dans la corbeille."
+msgstr "Nenhuma pergunta no lixo."
+
+#: includes/cpt.php
+msgid "Archives FAQ"
+msgstr "Arquivo FAQ"
+
+#: includes/cpt.php
+msgid "Filtrer les questions"
+msgstr "Filtrar perguntas"
+
+#: includes/cpt.php
+msgid "Liste des questions"
+msgstr "Lista de perguntas"
+
+#: includes/cpt.php
+msgid "Navigation dans les questions"
+msgstr "Navegação na lista de perguntas"
+
+#: includes/cpt.php
+msgid "Pages FAQ individuelles."
+msgstr "Páginas FAQ individuais."
+
+#: includes/cpt.php
+msgctxt "taxonomy general name"
+msgid "Catégories FAQ"
+msgstr "Categorias FAQ"
+
+#: includes/cpt.php
+msgctxt "taxonomy singular name"
+msgid "Catégorie FAQ"
+msgstr "Categoria FAQ"
+
+#: includes/cpt.php
+msgid "Rechercher une catégorie"
+msgstr "Pesquisar categoria"
+
+#: includes/cpt.php
+msgid "Toutes les catégories"
+msgstr "Todas as categorias"
+
+#: includes/cpt.php
+msgid "Catégorie parente"
+msgstr "Categoria superior"
+
+#: includes/cpt.php
+msgid "Catégorie parente :"
+msgstr "Categoria superior:"
+
+#: includes/cpt.php
+msgid "Modifier la catégorie"
+msgstr "Editar categoria"
+
+#: includes/cpt.php
+msgid "Mettre à jour la catégorie"
+msgstr "Atualizar categoria"
+
+#: includes/cpt.php
+msgid "Ajouter une catégorie"
+msgstr "Adicionar nova categoria"
+
+#: includes/cpt.php
+msgid "Nom de la nouvelle catégorie"
+msgstr "Nome da nova categoria"
+
+#: includes/cpt.php
+msgid "Catégories"
+msgstr "Categorias"
+
+#: includes/acf-fields.php includes/polylang.php
+msgid "Réglages FAQ"
+msgstr "Definições FAQ"
+
+#: includes/acf-fields.php
+msgid "Réglages"
+msgstr "Definições"
+
+#: includes/acf-fields.php
+msgid "Top Question"
+msgstr "Pergunta em destaque"
+
+#: includes/acf-fields.php
+msgid "Mettre en avant cette question sur la page d'archive."
+msgstr "Destacar esta pergunta na página de arquivo."
+
+#: includes/acf-fields.php blocks/related-questions/render.php
+msgid "Questions associées"
+msgstr "Perguntas relacionadas"
+
+#: includes/acf-fields.php
+msgid "Sélectionner les questions à afficher en bas de page."
+msgstr "Selecionar as perguntas a mostrar no fundo da página."
+
+#: includes/acf-fields.php
+msgid "Réglages du bloc"
+msgstr "Definições do bloco"
+
+#: includes/acf-fields.php
+msgid "Mise en forme"
+msgstr "Formato"
+
+#: includes/acf-fields.php
+msgid "Liste à puces"
+msgstr "Lista com marcadores"
+
+#: includes/acf-fields.php
+msgid "Liens en ligne"
+msgstr "Links em linha"
+
+#: includes/acf-fields.php
+msgid "Espacement entre les questions (px)"
+msgstr "Espaçamento entre perguntas (px)"
+
+#: includes/acf-fields.php
+msgid "Espace entre chaque question dans la liste."
+msgstr "Espaço entre cada pergunta na lista."
+
+#: includes/acf-fields.php
+msgid "Nombre de questions"
+msgstr "Número de perguntas"
+
+#: includes/acf-fields.php
+msgid "Nombre de questions à afficher en mode automatique."
+msgstr "Número de perguntas a mostrar em modo automático."
+
+#: includes/acf-fields.php
+msgid "Placeholder"
+msgstr "Texto de exemplo"
+
+#: includes/acf-fields.php
+msgid "Texte affiché dans le champ de recherche."
+msgstr "Texto exibido no campo de pesquisa."
+
+#: includes/acf-fields.php blocks/search-form/render.php
+msgid "Rechercher une question…"
+msgstr "Pesquisar uma pergunta…"
+
+#: includes/acf-fields.php includes/polylang.php
+msgid "Top Questions"
+msgstr "Perguntas em destaque"
+
+#: includes/acf-fields.php includes/polylang.php
+msgid "Questions mises en avant"
+msgstr "Perguntas em destaque"
+
+#: includes/acf-fields.php includes/polylang.php
+msgid "Glisser-déposer pour réordonner. La synchronisation avec le toggle par question est automatique."
+msgstr "Arrastar e soltar para reordenar. A sincronização com o interruptor por pergunta é automática."
+
+#: includes/assets.php
+msgid "Aucun résultat"
+msgstr "Sem resultados"
+
+#: includes/assets.php
+msgid "Recherche en cours…"
+msgstr "A pesquisar…"
+
+#: includes/assets.php
+msgid "Erreur de recherche"
+msgstr "Erro de pesquisa"
+
+#: includes/templates.php
+msgid "Archive FAQ"
+msgstr "Arquivo FAQ"
+
+#: includes/templates.php
+msgid "Page d'archive listant toutes les questions FAQ."
+msgstr "Página de arquivo com todas as perguntas FAQ."
+
+#: includes/templates.php
+msgid "Question FAQ"
+msgstr "Pergunta FAQ"
+
+#: includes/templates.php
+msgid "Page de detail d'une question FAQ."
+msgstr "Página de detalhe de uma pergunta FAQ."
+
+#: includes/templates.php
+msgid "Recherche FAQ"
+msgstr "Pesquisa FAQ"
+
+#: includes/templates.php
+msgid "Résultats de recherche filtrés sur la FAQ."
+msgstr "Resultados de pesquisa filtrados por FAQ."
+
+#: includes/rest-api.php
+msgid "Permalink de la question FAQ."
+msgstr "Link permanente da pergunta FAQ."
+
+#: includes/updater.php
+msgid "Impossible de renommer le repertoire du plugin."
+msgstr "Não foi possível renomear o diretório do plugin."
+
+#: includes/updater.php
+msgid "Pas de notes de version disponibles."
+msgstr "Sem notas de versão disponíveis."
+
+#: blocks/search-form/render.php
+msgid "Rechercher"
+msgstr "Pesquisar"
+
+#: blocks/search-form/render.php
+msgid "Suggestions"
+msgstr "Sugestões"
+
+#: blocks/related-questions/render.php
+msgid "Questions associées — aucune catégorie trouvée."
+msgstr "Perguntas relacionadas — nenhuma categoria encontrada."
+
+#: includes/bindings.php
+msgid "Signature FAQ"
+msgstr "Assinatura FAQ"
+
+#: includes/acf-fields.php
+msgid "Informations FAQ"
+msgstr "Informações FAQ"
+
+#: includes/acf-fields.php
+msgid "Métier"
+msgstr "Profissão"
+
+#: includes/acf-fields.php
+msgid "Affiché dans la signature des réponses FAQ."
+msgstr "Exibido na assinatura das respostas FAQ."
+
+#: includes/bindings.php
+msgid "Réponse rédigée par"
+msgstr "Resposta redigida por"
+
+#: includes/bindings.php
+msgid "Publié le"
+msgstr "Publicado em"
+
+#: includes/bindings.php
+msgid "Modifié le"
+msgstr "Atualizado em"

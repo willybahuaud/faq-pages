@@ -63,6 +63,11 @@ function afp_register_frontend_assets() {
 		'error'     => __( 'Erreur de recherche', 'faq-pages' ),
 	);
 
+	// Polylang : passer la langue courante au JS pour filtrer les resultats REST.
+	if ( function_exists( 'pll_current_language' ) ) {
+		$script_data['lang'] = pll_current_language();
+	}
+
 	/**
 	 * Filtre les donnees localisees du script d'autocompletion.
 	 *

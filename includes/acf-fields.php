@@ -250,28 +250,25 @@ function afp_register_acf_fields() {
 		'instruction_placement' => 'label',
 	) );
 
-	// Page d'options : liste centralisee des top questions.
+	// Profil utilisateur : metier (affiche dans la signature FAQ).
 	acf_add_local_field_group( array(
-		'key'                   => 'group_afp_options',
-		'title'                 => __( 'Top Questions', 'faq-pages' ),
+		'key'                   => 'group_afp_user',
+		'title'                 => __( 'Informations FAQ', 'faq-pages' ),
 		'fields'                => array(
 			array(
-				'key'           => 'field_afp_top_questions_list',
-				'label'         => __( 'Questions mises en avant', 'faq-pages' ),
-				'name'          => 'afp_top_questions_list',
-				'type'          => 'relationship',
-				'instructions'  => __( 'Glisser-déposer pour réordonner. La synchronisation avec le toggle par question est automatique.', 'faq-pages' ),
-				'post_type'     => array( 'faq_page' ),
-				'filters'       => array( 'search' ),
-				'return_format' => 'id',
+				'key'          => 'field_afp_user_job_title',
+				'label'        => __( 'Métier', 'faq-pages' ),
+				'name'         => 'afp_user_job_title',
+				'type'         => 'text',
+				'instructions' => __( 'Affiché dans la signature des réponses FAQ.', 'faq-pages' ),
 			),
 		),
 		'location'              => array(
 			array(
 				array(
-					'param'    => 'options_page',
+					'param'    => 'user_form',
 					'operator' => '==',
-					'value'    => 'afp-settings',
+					'value'    => 'all',
 				),
 			),
 		),
@@ -281,6 +278,44 @@ function afp_register_acf_fields() {
 		'label_placement'       => 'top',
 		'instruction_placement' => 'label',
 	) );
+
+	// Page d'options : liste centralisee des top questions.
+	// Avec Polylang (2+ langues) : un onglet + champ relationship par langue.
+	// Sans Polylang : champ relationship unique.
+	if ( afp_is_multilingual() ) {
+		afp_register_multilingual_top_questions_fields();
+	} else {
+		acf_add_local_field_group( array(
+			'key'                   => 'group_afp_options',
+			'title'                 => __( 'Top Questions', 'faq-pages' ),
+			'fields'                => array(
+				array(
+					'key'           => 'field_afp_top_questions_list',
+					'label'         => __( 'Questions mises en avant', 'faq-pages' ),
+					'name'          => 'afp_top_questions_list',
+					'type'          => 'relationship',
+					'instructions'  => __( 'Glisser-déposer pour réordonner. La synchronisation avec le toggle par question est automatique.', 'faq-pages' ),
+					'post_type'     => array( 'faq_page' ),
+					'filters'       => array( 'search' ),
+					'return_format' => 'id',
+				),
+			),
+			'location'              => array(
+				array(
+					array(
+						'param'    => 'options_page',
+						'operator' => '==',
+						'value'    => 'afp-settings',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+		) );
+	}
 }
 add_action( 'acf/init', 'afp_register_acf_fields' );
 
@@ -311,16 +346,18 @@ function afp_sync_post_to_options( $post_id ) {
 	$afp_sync_in_progress = true;
 
 	$is_top     = (bool) get_field( 'afp_top_question', $post_id );
-	$option_ids = (array) get_field( 'afp_top_questions_list', 'option' );
+	$field_name = afp_get_top_questions_field_name_for_post( $post_id );
+	$field_key  = afp_get_top_questions_field_key_for_post( $post_id );
+	$option_ids = (array) get_field( $field_name, 'option' );
 	$option_ids = array_filter( $option_ids );
 	$in_list    = in_array( $post_id, $option_ids, true );
 
 	if ( $is_top && ! $in_list ) {
 		$option_ids[] = $post_id;
-		update_field( 'field_afp_top_questions_list', $option_ids, 'option' );
+		update_field( $field_key, $option_ids, 'option' );
 	} elseif ( ! $is_top && $in_list ) {
 		$option_ids = array_values( array_diff( $option_ids, array( $post_id ) ) );
-		update_field( 'field_afp_top_questions_list', $option_ids, 'option' );
+		update_field( $field_key, $option_ids, 'option' );
 	}
 
 	$afp_sync_in_progress = false;
@@ -329,6 +366,9 @@ add_action( 'acf/save_post', 'afp_sync_post_to_options', 20 );
 
 /**
  * Synchronise la liste de la page d'options vers les toggles individuels.
+ *
+ * Avec Polylang (2+ langues), itere sur chaque langue pour synchroniser
+ * chaque liste independamment. Sans Polylang, synchronise la liste unique.
  *
  * @param int $post_id L'ID du post sauvegarde (ici 'options').
  * @return void
@@ -346,11 +386,35 @@ function afp_sync_options_to_posts( $post_id ) {
 
 	$afp_sync_in_progress = true;
 
-	$new_ids = (array) get_field( 'afp_top_questions_list', 'option' );
+	if ( afp_is_multilingual() ) {
+		$languages = pll_languages_list();
+		foreach ( $languages as $lang ) {
+			afp_sync_top_questions_for_language( $lang );
+		}
+	} else {
+		afp_sync_top_questions_for_language();
+	}
+
+	$afp_sync_in_progress = false;
+}
+add_action( 'acf/save_post', 'afp_sync_options_to_posts', 20 );
+
+/**
+ * Synchronise les top questions pour une langue donnee.
+ *
+ * Compare la liste de la page d'options avec les posts flagges
+ * et met a jour les toggles individuels en consequence.
+ *
+ * @param string $lang Le slug de la langue (vide si mono-langue).
+ * @return void
+ */
+function afp_sync_top_questions_for_language( $lang = '' ) {
+	$field_name = $lang ? 'afp_top_questions_list_' . $lang : 'afp_top_questions_list';
+
+	$new_ids = (array) get_field( $field_name, 'option' );
 	$new_ids = array_filter( $new_ids );
 
-	// Recuperer les posts actuellement flagges "top".
-	$current_top_query = new WP_Query( array(
+	$meta_args = array(
 		'post_type'      => 'faq_page',
 		'posts_per_page' => -1,
 		'no_found_rows'  => true,
@@ -362,8 +426,15 @@ function afp_sync_options_to_posts( $post_id ) {
 				'compare' => '=',
 			),
 		),
-	) );
-	$current_ids = $current_top_query->posts;
+	);
+
+	if ( $lang ) {
+		$meta_args['lang'] = $lang;
+	}
+
+	// Recuperer les posts actuellement flagges "top" (pour cette langue).
+	$current_top_query = new WP_Query( $meta_args );
+	$current_ids       = $current_top_query->posts;
 
 	// Posts a activer.
 	$to_enable = array_diff( $new_ids, $current_ids );
@@ -376,7 +447,4 @@ function afp_sync_options_to_posts( $post_id ) {
 	foreach ( $to_disable as $pid ) {
 		update_field( 'field_afp_top_question', 0, $pid );
 	}
-
-	$afp_sync_in_progress = false;
 }
-add_action( 'acf/save_post', 'afp_sync_options_to_posts', 20 );

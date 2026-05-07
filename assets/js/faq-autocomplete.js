@@ -117,6 +117,11 @@
 
 		var url = afpAutocomplete.restUrl + '?search=' + encodeURIComponent( query ) + '&per_page=5&_fields=id,title,link';
 
+		// Polylang : filtrer par langue courante si disponible.
+		if ( afpAutocomplete.lang ) {
+			url += '&lang=' + encodeURIComponent( afpAutocomplete.lang );
+		}
+
 		fetch( url, {
 			signal: abortController.signal,
 		} )
